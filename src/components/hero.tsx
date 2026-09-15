@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { profile } from "@/lib/data";
 
 function HeroLine({
@@ -75,21 +76,21 @@ export function Hero() {
         }`}
       >
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
-          <a
-            href="#work"
+          <Link
+            href="/work"
             className="inline-flex items-center justify-center border border-border px-8 py-4 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-primary transition-colors duration-300 hover:border-accent hover:text-accent"
           >
             View Work
-          </a>
-          <a
-            href="#contact"
+          </Link>
+          <Link
+            href="/contact"
             className="group inline-flex items-center justify-center gap-2 border-b border-border pb-1 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-secondary transition-colors duration-300 hover:border-accent hover:text-accent"
           >
             Contact
             <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
               &rarr;
             </span>
-          </a>
+          </Link>
         </div>
 
         <p

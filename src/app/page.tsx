@@ -1,25 +1,23 @@
-import { Navigation } from "@/components/navigation";
 import { Hero } from "@/components/hero";
 import { SelectedWork } from "@/components/selected-work";
 import { Services } from "@/components/services";
-import { About } from "@/components/about";
-import { Technologies } from "@/components/technologies";
-import { Contact } from "@/components/contact";
-import { Footer } from "@/components/footer";
+import { AboutShort } from "@/components/about-short";
+import { CtaSection } from "@/components/ui/cta-section";
+import { projects } from "@/lib/data";
 
 export default function Home() {
   return (
     <>
-      <Navigation />
-      <main id="main">
-        <Hero />
-        <SelectedWork />
-        <Services />
-        <About />
-        <Technologies />
-        <Contact />
-      </main>
-      <Footer />
+      <Hero />
+      <SelectedWork
+        list={projects.slice(0, 2)}
+        showCta
+        heading="Work that ships,"
+        headingAccent="not just specs."
+      />
+      <Services compact />
+      <AboutShort />
+      <CtaSection />
     </>
   );
 }

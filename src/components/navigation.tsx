@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { navLinks, profile } from "@/lib/data";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { navLinks, profile, cta } from "@/lib/data";
 
 export function Navigation() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -21,6 +24,9 @@ export function Navigation() {
     };
   }, [menuOpen]);
 
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
@@ -28,30 +34,34 @@ export function Navigation() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:h-20 md:px-10">
-        <a
-          href="#top"
-          className="text-sm font-bold tracking-[0.35em] text-primary"
+        <Link
+          href="/"
+          className="text-sm font-bold tracking-[0.35em] text-primary transition-colors hover:text-accent"
           onClick={() => setMenuOpen(false)}
         >
           MANU
-        </a>
+        </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-10 md:flex">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
-              className="link-underline text-[0.8rem] uppercase tracking-[0.2em] text-secondary transition-colors duration-300 hover:text-primary"
+              className={`link-underline text-[0.8rem] uppercase tracking-[0.2em] transition-colors duration-300 ${
+                isActive(link.href)
+                  ? "text-primary"
+                  : "text-secondary hover:text-primary"
+              }`}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <a
-            href={`mailto:${profile.email}`}
-            className="border border-border px-4 py-2 text-[0.8rem] uppercase tracking-[0.2em] text-primary transition-colors duration-300 hover:border-accent/60 hover:text-accent"
+          <Link
+            href={cta.href}
+            className="border border-accent/50 px-4 py-2 text-[0.8rem] uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:bg-accent/10"
           >
-            Let&apos;s Talk
-          </a>
+            {cta.label}
+          </Link>
         </nav>
 
         <button
@@ -79,35 +89,33 @@ export function Navigation() {
           menuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
-        <nav aria-label="Mobile" className="flex flex-1 flex-col justify-center gap-8 px-6">
+        <nav aria-label="Mobile" className="flex flex-1 flex-col justify-center gap-6 px-6">
           {navLinks.map((link, index) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="text-4xl font-bold tracking-tight text-primary transition-colors hover:text-accent"
+              className={`text-4xl font-bold tracking-tight transition-colors ${
+                isActive(link.href)
+                  ? "text-accent"
+                  : "text-primary hover:text-accent"
+              }`}
               style={{ transitionDelay: menuOpen ? `${index * 40}ms` : "0ms" }}
             >
               <span className="mr-4 text-xs text-secondary">{`0${index + 1}`}</span>
               {link.label}
-            </a>
+            </Link>
           ))}
+          <Link
+            href={cta.href}
+            onClick={() => setMenuOpen(false)}
+            className="inline-flex w-fit items-center border border-accent/50 px-6 py-3 text-sm font-medium uppercase tracking-[0.2em] text-accent transition-colors hover:bg-accent/10"
+          >
+            {cta.label}
+          </Link>
         </nav>
         <div className="flex items-center justify-between border-t border-line px-6 py-6">
-          <a
-            href={`mailto:${profile.email}`}
-            onClick={() => setMenuOpen(false)}
-            className="text-sm text-secondary"
-          >
-            {profile.email}
-          </a>
-          <a
-            href={`mailto:${profile.email}`}
-            onClick={() => setMenuOpen(false)}
-            className="border border-border px-5 py-3 text-xs uppercase tracking-[0.2em] text-primary"
-          >
-            Let&apos;s Talk
-          </a>
+          <span className="text-sm text-secondary">{profile.email}</span>
         </div>
       </div>
     </header>

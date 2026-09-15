@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
+import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 import { profile } from "@/lib/data";
 import "./globals.css";
 
@@ -22,11 +24,14 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${profile.name} — Digital Experiences & Software`,
+  title: {
+    default: `${profile.name} — Web Developer & Software Developer`,
+    template: `%s — ${profile.name}`,
+  },
   description:
     "I build websites, web applications, and software that are fast, functional, and thoughtfully crafted.",
   openGraph: {
-    title: `${profile.name} — Digital Experiences & Software`,
+    title: `${profile.name} — Web Developer & Software Developer`,
     description:
       "I build websites, web applications, and software that are fast, functional, and thoughtfully crafted.",
     type: "website",
@@ -44,7 +49,11 @@ export default function RootLayout({
       className={`${inter.variable} ${fraunces.variable} ${mono.variable} antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-primary">
-        {children}
+        <Navigation />
+        <main id="main" className="flex-1">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

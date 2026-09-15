@@ -1,5 +1,10 @@
 # Portfolio Project — Implementation Plan
 
+> **STATUS (Sep 2026):** app is a **multi-page website**. Home is a concise
+> intro; Work/About/Services/Quote/Contact are dedicated routes. The old
+> single-page section plan below is kept for reference; see the
+> "Multi-Page Architecture" section at the bottom for the current structure.
+
 ## Overview
 Premium personal developer portfolio for "MANU".  
 Design direction: **Minimal + Luxury + Modern Developer**  
@@ -296,3 +301,56 @@ SOMETHING USEFUL.
 - `public/next.svg`
 - `public/vercel.svg`
 - `public/window.svg`
+
+---
+
+## Multi-Page Architecture (current)
+
+Refactored from one long page into a cohesive premium multi-page website.
+Design system (tokens, typography, borders, animations, buttons) unchanged.
+
+### Routes
+```
+/                      Home — Hero → Featured Work → What I Do (services) → Short About → CTA
+/work                  All projects with category filter
+/work/[slug]           Per-project case study (business-template, inventory-system)
+/services              Services with "what's included" + "typical use cases" + CTA
+/about                 Intro, background, skills, philosophy, technologies
+/quote                 Website cost calculator (the interactive quote builder)
+/contact               Contact channels (email/WhatsApp/GitHub/LinkedIn) + contact form
+```
+
+### Architecture changes
+- **`layout.tsx`** now owns `Navigation` + `Footer` (global, every page).
+- **`template.tsx`** provides the page transition: fast subtle
+  `page-in` fade/slide (0.45s, luxury easing) + scroll-to-top on navigation.
+  Respects `prefers-reduced-motion`.
+- **Pages** set their own metadata via `export const metadata`
+  (`template: "%s — MANU"` in root layout). Home title:
+  "Manu — Web Developer & Software Developer".
+- `work/[slug]/page.tsx` uses `generateStaticParams` → SSG for both projects.
+
+### Component reuse (no duplication)
+| Component | Used on |
+|-----------|---------|
+| `Hero` | `/` |
+| `SelectedWork` (props: `list`, `showCta`) | `/` (featured 2 + "View all work") |
+| `WorkGallery` (category filter, client) | `/work` |
+| `ProjectEntry` (links name → case study) | `/`, `/work` |
+| `Services` (`compact` prop; full = included + use cases) | `/` (compact), `/services` |
+| `AboutShort` | `/` |
+| `Technologies` | `/about` |
+| `Calculator` (standalone, heading lives on the page) | `/quote` |
+| `CtaSection` | `/`, `/services`, `/work/*` |
+| `PageHeader` (label + title + intro) | `/work`, `/services`, `/about`, `/quote` |
+| `ContactForm` (client) | `/contact` |
+
+### Validation
+- Build fully static, all routes render, type-check + lint clean.
+- `data.ts` extended: `Project` gets `slug`/`category` + case-study fields;
+  `technologies` becomes `{name, note}[]`; `services` get `included`/`useCases`;
+  `profile.whatsapp` and WhatsApp social added (placeholder number — replace it).
+
+### Pending / placeholders
+- `profile.whatsapp = https://wa.me/254712345678` — replace with real number.
+- Quote + contact forms log payloads to console; backend integration pending.
