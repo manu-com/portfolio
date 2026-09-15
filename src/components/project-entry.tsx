@@ -127,14 +127,16 @@ export function ProjectEntry({ project, reversed = false }: ProjectEntryProps) {
                 </span>
               </a>
             ) : null}
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-underline text-[0.8rem] uppercase tracking-[0.2em] text-secondary transition-colors duration-300 hover:text-primary"
-            >
-              GitHub
-            </a>
+            {project.githubUrl ? (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-underline text-[0.8rem] uppercase tracking-[0.2em] text-secondary transition-colors duration-300 hover:text-primary"
+              >
+                GitHub
+              </a>
+            ) : null}
           </div>
         </Reveal>
       </div>

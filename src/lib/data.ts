@@ -6,7 +6,7 @@ export type Project = {
   description: string;
   technologies: string[];
   liveUrl: string;
-  githubUrl: string;
+  githubUrl: string | null;
   imageAlt: string;
   image?: string;
   /* detail-page fields */
@@ -48,7 +48,7 @@ export const projects: Project[] = [
       "A professional single-page business website built with React, Vite, and Tailwind CSS — designed for B2B companies, agencies, and service-based businesses. Includes dark mode, SEO, accessibility, and reusable components.",
     technologies: ["React", "Vite", "Tailwind CSS", "Motion"],
     liveUrl: "https://business-template-kohl.vercel.app",
-    githubUrl: "https://github.com/manu-com/business-template",
+    githubUrl: null,
     imageAlt: "Business website template interface screenshot",
     image: "/projects/business-template.png",
     overview:
@@ -76,7 +76,7 @@ export const projects: Project[] = [
       "A web-based inventory management application built with React and Vite — dashboard, product and category management, filtering, and a component-driven architecture.",
     technologies: ["React", "React Router", "Vite", "Tailwind CSS"],
     liveUrl: "",
-    githubUrl: "https://github.com/manu-com/inventory-system",
+    githubUrl: null,
     imageAlt: "Inventory management system interface screenshot",
     overview:
       "A web application for managing inventory — tracking products, organizing them into categories, and monitoring stock through a dashboard.",

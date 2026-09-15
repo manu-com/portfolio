@@ -7,7 +7,7 @@ import { projects } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "A selection of websites, web applications, and software built by Manu — with live demos, GitHub links, and full case studies.",
+    "A selection of websites, web applications, and software built by Manu — with live demos and full case studies.",
 };
 
 export default function WorkPage() {

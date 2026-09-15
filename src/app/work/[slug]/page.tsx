@@ -100,14 +100,16 @@ export default async function ProjectDetailPage({
                 Live Demo &#8599;
               </a>
             )}
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center border border-border px-6 py-3 text-[0.75rem] font-medium uppercase tracking-[0.25em] text-primary transition-colors duration-300 hover:border-accent/60 hover:text-accent"
-            >
-              View on GitHub
-            </a>
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center border border-border px-6 py-3 text-[0.75rem] font-medium uppercase tracking-[0.25em] text-primary transition-colors duration-300 hover:border-accent/60 hover:text-accent"
+              >
+                View on GitHub
+              </a>
+            )}
           </div>
         </Reveal>
 
