@@ -354,3 +354,19 @@ Design system (tokens, typography, borders, animations, buttons) unchanged.
 ### Pending / placeholders
 - `profile.whatsapp = https://wa.me/254712345678` — replace with real number.
 - Quote + contact forms log payloads to console; backend integration pending.
+
+### Operational warnings (READ before touching this project)
+- **Never run `next build` while the dev server is live.** Both write to the same
+  `.next/` directory; the build corrupts the running dev server (500s,
+  `Cannot find module './331.js'`). Validate with `next build` only when the
+  dev server is stopped (check `curl -s localhost:3000` returns 000 first).
+- The running dev server (nohup, port 3000) must not be killed without asking
+  the user. Restart if needed: `pkill -f "npm run dev"`, `rm -rf .next`,
+  then relaunch detached with `setsid bash -c 'npm run dev > /tmp/next-dev.log 2>&1 &'`.
+  Use `setsid` so it survives the tool shell session.
+- Dev server used to be the user's terminal process (pid 44842); it was broken
+  in-session by a `next build` and re-launched detached by this session.
+
+### Commit log (multi-page refactor)
+- `bd142e9` — deduplicate services (extract `ServicesGrid`), /services heading once
+- `04e6dff` — multi-page refactor (routes, global nav/footer, template transitions)
