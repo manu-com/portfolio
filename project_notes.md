@@ -355,7 +355,8 @@ Design system (tokens, typography, borders, animations, buttons) unchanged.
   phone `+254 112 888 460` (`tel:+254112888460`), WhatsApp
   `https://wa.me/254112888460`. **No LinkedIn anywhere** (removed from
   profile/socials/contact channels/footer).
-- Forms submit via **FormSubmit AJAX** — `https://formsubmit.co/ajax/e.ndereba1@gmail.com`
+- Forms submit via **FormSubmit AJAX** — `https://formsubmit.co/ajax/e466c861d0389961938e8142a8b4e1d8`
+  (form-ID hash, so the email address never appears in client code)
   — no backend, no DB, no API keys in client code. Isolated entirely in
   `src/lib/contact.ts` (`sendFormEmail`, `whatsappHref`, `mailtoHref`,
   `buildQuoteSummary`, `buildContactSummary`) so a future Supabase swap only

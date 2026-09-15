@@ -26,13 +26,13 @@ export function mailtoHref(subject?: string, body?: string): string {
 
 /*
    Frontend-friendly form submission — FormSubmit AJAX endpoint.
+   Uses a form ID hash (no naked email in client code); activation was
+   completed via that hash. Sends email to CONTACT.email.
    - No backend, no database, no API keys/secrets exposed in the client.
-   - Sends email to CONTACT.email. The FIRST submission triggers an
-     activation email to that inbox (click the link to activate).
    - To upgrade to Supabase later: send a POST to a /api/* edge function
      instead and keep the same return contract: { ok: true } | { ok: false, error }.
 */
-const FORM_SUBMIT_ENDPOINT = "https://formsubmit.co/ajax/e.ndereba1@gmail.com";
+const FORM_SUBMIT_ENDPOINT = "https://formsubmit.co/ajax/e466c861d0389961938e8142a8b4e1d8";
 
 export async function sendFormEmail(input: {
   subject: string;
