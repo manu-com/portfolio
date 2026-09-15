@@ -301,10 +301,7 @@ export function Calculator() {
                     <span className="text-[0.75rem] uppercase tracking-[0.25em] text-secondary">
                       Estimated Total
                     </span>
-                    <span
-                      key={total}
-                      className="animate-total text-2xl font-bold tracking-tight text-primary"
-                    >
+                    <span className="text-2xl font-bold tracking-tight text-primary">
                       {formatKSh(total)}
                     </span>
                   </div>

@@ -28,11 +28,11 @@ export function ProjectEntry({ project, reversed = false }: ProjectEntryProps) {
                   alt={project.imageAlt}
                   fill
                   sizes="(max-width: 768px) 85vw, 55vw"
-                  className="project-thumb object-cover object-top"
+                  className="object-cover object-top"
                 />
               ) : (
                 <div
-                  className={`project-thumb absolute inset-0 bg-gradient-to-br from-[#1c1c1c] to-[#0e0e0e] ${
+                  className={`absolute inset-0 bg-gradient-to-br from-[#1c1c1c] to-[#0e0e0e] ${
                     reversed ? "to-45%" : ""
                   }`}
                   aria-hidden="true"

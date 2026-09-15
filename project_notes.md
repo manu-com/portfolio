@@ -355,6 +355,20 @@ Design system (tokens, typography, borders, animations, buttons) unchanged.
 - `profile.whatsapp = https://wa.me/254712345678` — replace with real number.
 - Quote + contact forms log payloads to console; backend integration pending.
 
+### Drawdown: animations reduced to minimum (Sep 2026)
+- Removed all scroll/load choreography: `.reveal` + delay classes,
+  `.reveal-image` mask reveal, `.hero-line` text reveal, project-thumb hover
+  zoom, calculator `animate-total` flash, mobile-menu link stagger.
+- `Reveal` is now a static passthrough (keeps `className` for grid cells);
+  `src/hooks/use-in-view.ts` deleted. `Hero` is a server component (no client
+  state), content visible instantly.
+- Kept only functional motion: `link-underline` hover slide, color/border
+  hover transitions on buttons/links/cards, nav scroll background, mobile
+  overlay fade, and the fast `page-enter` transition. Reduced-motion block
+  updated accordingly.
+- Verified: all 13 QA checks pass, no console errors, calculator still
+  updates (35,000 after E-commerce), nav + mobile menu work.
+
 ### Operational warnings (READ before touching this project)
 - **Never run `next build` while the dev server is live.** Both write to the same
   `.next/` directory; the build corrupts the running dev server (500s,

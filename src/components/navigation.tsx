@@ -100,7 +100,6 @@ export function Navigation() {
                   ? "text-accent"
                   : "text-primary hover:text-accent"
               }`}
-              style={{ transitionDelay: menuOpen ? `${index * 40}ms` : "0ms" }}
             >
               <span className="mr-4 text-xs text-secondary">{`0${index + 1}`}</span>
               {link.label}
