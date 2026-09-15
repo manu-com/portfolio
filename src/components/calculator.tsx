@@ -8,6 +8,13 @@ import {
   formatKSh,
   type CalculatorSelection,
 } from "@/lib/pricing";
+import {
+  sendFormEmail,
+  buildQuoteSummary,
+  mailtoHref,
+  whatsappHref,
+  CONTACT,
+} from "@/lib/contact";
 import { Reveal } from "@/components/ui/reveal";
 
 const EMPTY: CalculatorSelection = {
@@ -325,6 +332,7 @@ export function Calculator() {
               {quoteOpen && (
                 <Reveal>
                   <QuoteForm
+                    sel={sel}
                     total={total}
                     descriptions={descriptions}
                     onCancel={() => setQuoteOpen(false)}
@@ -364,61 +372,97 @@ export function Calculator() {
 /* ------------ quote form ------------ */
 
 function QuoteForm({
+  sel,
   total,
   descriptions,
   onCancel,
 }: {
+  sel: CalculatorSelection;
   total: number;
   descriptions: string[];
   onCancel: () => void;
 }) {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError] = useState("");
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
-    const payload = {
-      name: fd.get("name") as string,
-      email: fd.get("email") as string,
-      phone: fd.get("phone") as string,
-      description: fd.get("description") as string,
-      selections: descriptions,
-      estimate: total,
-      submittedAt: new Date().toISOString(),
-    };
 
-    console.log("Quote request payload:", payload);
+    const type = pricing.websiteTypes.find((t) => t.id === sel.websiteType);
+    const page = pricing.pages.find((p) => p.id === sel.pages);
+    const design = pricing.design.find((d) => d.id === sel.design);
+    const features = sel.features.map((id) => pricing.features.find((f) => f.id === id)?.name ?? id);
+    const services = sel.additionalServices.map((id) => pricing.additionalServices.find((s) => s.id === id)?.name ?? id);
 
-    /*
-      Backend integration point:
-      Replace the console.log above with a fetch/POST to your backend
-      endpoint or email service, e.g.:
-      
-      await fetch("/api/quote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-    */
+    const name = (fd.get("name") as string) ?? "";
+    const email = (fd.get("email") as string) ?? "";
+    const phone = (fd.get("phone") as string) ?? "";
 
-    setSubmitted(true);
+    const summary = buildQuoteSummary({
+      name,
+      email,
+      phone,
+      websiteType: type?.name ?? "",
+      pages: page?.name ?? "",
+      features: features.join(", "),
+      design: design?.name ?? "",
+      additionalServices: services.join(", "),
+      estimatedCost: formatKSh(total),
+      description: (fd.get("description") as string) ?? "",
+    });
+
+    setStatus("sending");
+    setError("");
+
+    const result = await sendFormEmail({
+      subject: "NEW WEBSITE QUOTE REQUEST",
+      message: summary,
+    });
+
+    if (result.ok) {
+      setStatus("sent");
+    } else {
+      setError(result.error ?? "Something went wrong. Please try again.");
+      setStatus("error");
+    }
   }
 
-  if (submitted) {
+  if (status === "sent") {
     return (
-      <div className="mt-4 rounded border border-border bg-surface p-8">
+      <div className="mt-4 rounded border border-line bg-surface p-8">
         <p className="text-[0.7rem] uppercase tracking-[0.3em] text-accent">Received</p>
-        <h4 className="mt-4 text-xl font-bold text-primary">Quote request received.</h4>
+        <h4 className="mt-4 text-xl font-bold text-primary">
+          Thanks! Your quote request has been sent.
+        </h4>
         <p className="mt-3 text-sm leading-relaxed text-secondary">
           I&apos;ll review your requirements and get back to you within 24 hours
-          with a refined estimate.
+          with a refined estimate. Need to reach me right now?
         </p>
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+          <a
+            href={mailtoHref("Following up on my website quote request")}
+            className="inline-flex items-center justify-center border border-accent/50 bg-accent/[0.04] px-6 py-3 text-[0.75rem] font-medium uppercase tracking-[0.25em] text-accent transition-colors duration-300 hover:bg-accent/10"
+          >
+            Email Me
+          </a>
+          <a
+            href={whatsappHref(
+              `Hi Manu, I just sent a website quote request. My estimated cost was ${formatKSh(total)}.`
+            )}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center border border-border px-6 py-3 text-[0.75rem] font-medium uppercase tracking-[0.25em] text-primary transition-colors duration-300 hover:border-accent/60 hover:text-accent"
+          >
+            WhatsApp Me
+          </a>
+        </div>
         <button
           type="button"
           onClick={onCancel}
           className="mt-6 border border-border px-5 py-3 text-[0.7rem] uppercase tracking-[0.2em] text-secondary transition-colors hover:border-accent/60 hover:text-primary"
         >
-          Close
+          Return to Calculator
         </button>
       </div>
     );
@@ -508,12 +552,19 @@ function QuoteForm({
         </div>
       </div>
 
+      {status === "error" && (
+        <p className="mt-6 border border-border bg-background px-4 py-3 text-sm text-secondary" role="alert">
+          {error} You can also email me directly at {CONTACT.email}.
+        </p>
+      )}
+
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <button
           type="submit"
-          className="border border-accent/50 bg-accent/[0.04] px-8 py-4 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-accent transition-all duration-300 hover:bg-accent/10"
+          disabled={status === "sending"}
+          className="border border-accent/50 bg-accent/[0.04] px-8 py-4 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-accent transition-all duration-300 hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Submit Quote Request
+          {status === "sending" ? "Sending…" : "Submit Quote Request"}
         </button>
         <button
           type="button"

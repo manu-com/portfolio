@@ -22,10 +22,10 @@ export const profile = {
   tagline: "DIGITAL EXPERIENCES & SOFTWARE.",
   intro:
     "I build websites, web applications, and software that are fast, functional, and thoughtfully crafted.",
-  email: "hello@manu.dev",
-  whatsapp: "https://wa.me/254712345678",
+  email: "e.ndereba1@gmail.com",
+  phone: "+254 112 888 460",
+  whatsapp: "https://wa.me/254112888460",
   github: "https://github.com/manu-com",
-  linkedin: "https://linkedin.com/in/manu",
   location: "Available worldwide",
 };
 
@@ -179,7 +179,6 @@ export const technologies = [
 
 export const socials = [
   { label: "GitHub", href: "https://github.com/manu-com" },
-  { label: "LinkedIn", href: "https://linkedin.com/in/manu" },
-  { label: "WhatsApp", href: "https://wa.me/254712345678" },
-  { label: "Email", href: "mailto:hello@manu.dev" },
+  { label: "WhatsApp", href: "https://wa.me/254112888460" },
+  { label: "Email", href: "mailto:e.ndereba1@gmail.com" },
 ];

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { profile, socials } from "@/lib/data";
+import { whatsappHref, mailtoHref } from "@/lib/contact";
 import { ContactForm } from "@/components/contact-form";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionLabel } from "@/components/ui/section-label";
@@ -7,14 +8,30 @@ import { SectionLabel } from "@/components/ui/section-label";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Manu — email, WhatsApp, GitHub, and LinkedIn, or send a message directly through the contact form.",
+    "Get in touch with Manu — email, phone, WhatsApp, and GitHub, or send a message directly through the contact form.",
 };
 
 const contactChannels = [
-  { label: "Email", value: profile.email, href: `mailto:${profile.email}` },
-  { label: "WhatsApp", value: "Available for quick questions", href: profile.whatsapp },
-  { label: "GitHub", value: "Code and open-source work", href: profile.github },
-  { label: "LinkedIn", value: "Connect professionally", href: profile.linkedin },
+  {
+    label: "Email",
+    value: profile.email,
+    href: mailtoHref("Project inquiry"),
+  },
+  {
+    label: "Phone",
+    value: profile.phone,
+    href: "tel:+254112888460",
+  },
+  {
+    label: "WhatsApp",
+    value: "Chat about a project",
+    href: whatsappHref(),
+  },
+  {
+    label: "GitHub",
+    value: "Code and open-source work",
+    href: profile.github,
+  },
 ];
 
 export default function ContactPage() {

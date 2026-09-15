@@ -317,7 +317,7 @@ Design system (tokens, typography, borders, animations, buttons) unchanged.
 /services              Services with "what's included" + "typical use cases" + CTA
 /about                 Intro, background, skills, philosophy, technologies
 /quote                 Website cost calculator (the interactive quote builder)
-/contact               Contact channels (email/WhatsApp/GitHub/LinkedIn) + contact form
+/contact               Contact channels (email/phone/WhatsApp/GitHub) + contact form
 ```
 
 ### Architecture changes
@@ -348,12 +348,30 @@ Design system (tokens, typography, borders, animations, buttons) unchanged.
 ### Validation
 - Build fully static, all routes render, type-check + lint clean.
 - `data.ts` extended: `Project` gets `slug`/`category` + case-study fields;
-  `technologies` becomes `{name, note}[]`; `services` get `included`/`useCases`;
-  `profile.whatsapp` and WhatsApp social added (placeholder number — replace it).
+  `technologies` becomes `{name, note}[]`; `services` get `included`/`useCases`.
 
-### Pending / placeholders
-- `profile.whatsapp = https://wa.me/254712345678` — replace with real number.
-- Quote + contact forms log payloads to console; backend integration pending.
+### Contact submissions (Sep 2026)
+- **Real contact details** (replace nothing): email `e.ndereba1@gmail.com`,
+  phone `+254 112 888 460` (`tel:+254112888460`), WhatsApp
+  `https://wa.me/254112888460`. **No LinkedIn anywhere** (removed from
+  profile/socials/contact channels/footer).
+- Forms submit via **FormSubmit AJAX** — `https://formsubmit.co/ajax/e.ndereba1@gmail.com`
+  — no backend, no DB, no API keys in client code. Isolated entirely in
+  `src/lib/contact.ts` (`sendFormEmail`, `whatsappHref`, `mailtoHref`,
+  `buildQuoteSummary`, `buildContactSummary`) so a future Supabase swap only
+  changes `sendFormEmail` (must keep the `{ ok } | { ok, error }` contract).
+- Quote form (calculator) sends the full selection set (type, pages, design,
+  features, additional services) + contact fields + `formatKSh(estimate)` with
+  subject **"NEW WEBSITE QUOTE REQUEST"**; contact form sends a contact summary.
+  On success both show confirmation ("Thanks! Your quote request has been
+  sent." / "Thanks! Your message has been sent.") with `[EMAIL ME]`
+  `[WHATSAPP ME]` buttons; on failure they surface a fallback with direct
+  email. Calculator math itself is unchanged (base 15,000 → 89,500 verified).
+- **Activation:** the FIRST AJAX submission triggers a FormSubmit activation
+  email to the inbox (click "Activate Form"). Until activated, deferred
+  responses are `success:"false"` with an "Activation" message — the app
+  detects this and shows a clear message instead of a generic error. No more
+  placeholder values; footer now lists email + phone + WhatsApp.
 
 ### Drawdown: animations reduced to minimum (Sep 2026)
 - Removed all scroll/load choreography: `.reveal` + delay classes,
@@ -382,5 +400,6 @@ Design system (tokens, typography, borders, animations, buttons) unchanged.
   in-session by a `next build` and re-launched detached by this session.
 
 ### Commit log (multi-page refactor)
+- `8e348dc` — animations reduced to minimum; static `Reveal`, server `Hero`
 - `bd142e9` — deduplicate services (extract `ServicesGrid`), /services heading once
 - `04e6dff` — multi-page refactor (routes, global nav/footer, template transitions)

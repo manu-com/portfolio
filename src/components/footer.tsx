@@ -70,12 +70,28 @@ export function Footer() {
           <p className="text-[0.7rem] uppercase tracking-[0.3em] text-secondary/50">
             Contact
           </p>
-          <a
-            href={`mailto:${profile.email}`}
-            className="link-underline mt-5 inline-block text-sm text-secondary transition-colors duration-300 hover:text-primary"
-          >
-            {profile.email}
-          </a>
+          <div className="mt-5 flex flex-col gap-3">
+            <a
+              href={`mailto:${profile.email}`}
+              className="link-underline inline-block text-sm text-secondary transition-colors duration-300 hover:text-primary"
+            >
+              {profile.email}
+            </a>
+            <a
+              href="tel:+254112888460"
+              className="link-underline inline-block text-sm text-secondary transition-colors duration-300 hover:text-primary"
+            >
+              {profile.phone}
+            </a>
+            <a
+              href="https://wa.me/254112888460?text=Hi%20Manu%2C%20I%27d%20like%20to%20discuss%20a%20website%20project."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-underline inline-block text-sm text-secondary transition-colors duration-300 hover:text-primary"
+            >
+              WhatsApp
+            </a>
+          </div>
         </div>
       </div>
 

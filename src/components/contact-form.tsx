@@ -1,36 +1,71 @@
 "use client";
 
 import { useState } from "react";
+import {
+  sendFormEmail,
+  buildContactSummary,
+  mailtoHref,
+  whatsappHref,
+} from "@/lib/contact";
+
+type SubmitStatus = "idle" | "sending" | "sent" | "error";
 
 export function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<SubmitStatus>("idle");
+  const [error, setError] = useState<string>("");
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
-    const payload = {
-      name: fd.get("name") as string,
-      email: fd.get("email") as string,
-      subject: fd.get("subject") as string,
-      message: fd.get("message") as string,
-      submittedAt: new Date().toISOString(),
+    const input = {
+      name: (fd.get("name") as string) ?? "",
+      email: (fd.get("email") as string) ?? "",
+      subject: (fd.get("subject") as string) ?? "",
+      message: (fd.get("message") as string) ?? "",
     };
 
-    console.log("Contact message payload:", payload);
+    setStatus("sending");
+    setError("");
 
-    setSubmitted(true);
+    const result = await sendFormEmail({
+      subject: "New contact message from manu.dev",
+      message: buildContactSummary(input),
+    });
+
+    if (result.ok) {
+      setStatus("sent");
+    } else {
+      setError(result.error ?? "Something went wrong. Please try again.");
+      setStatus("error");
+    }
   }
 
-  if (submitted) {
+  if (status === "sent") {
     return (
-      <div className="border border-line bg-surface p-10">
+      <div className="border border-line bg-surface p-8 md:p-10">
         <p className="text-[0.7rem] uppercase tracking-[0.3em] text-accent">Received</p>
         <h3 className="mt-4 text-2xl font-bold tracking-tight text-primary">
-          Message sent.
+          Thanks! Your message has been sent.
         </h3>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-secondary">
-          Thanks for reaching out. I&apos;ll get back to you within 24 hours.
+          I&apos;ll get back to you within 24 hours. Prefer to reach me right now?
         </p>
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+          <a
+            href={mailtoHref("Following up on my message")}
+            className="inline-flex items-center justify-center border border-accent/50 bg-accent/[0.04] px-6 py-3 text-[0.75rem] font-medium uppercase tracking-[0.25em] text-accent transition-colors duration-300 hover:bg-accent/10"
+          >
+            Email Me
+          </a>
+          <a
+            href={whatsappHref()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center border border-border px-6 py-3 text-[0.75rem] font-medium uppercase tracking-[0.25em] text-primary transition-colors duration-300 hover:border-accent/60 hover:text-accent"
+          >
+            WhatsApp Me
+          </a>
+        </div>
       </div>
     );
   }
@@ -95,11 +130,18 @@ export function ContactForm() {
         />
       </div>
 
+      {status === "error" && (
+        <p className="mt-6 border border-border bg-background px-4 py-3 text-sm text-secondary" role="alert">
+          {error}
+        </p>
+      )}
+
       <button
         type="submit"
-        className="mt-8 border border-accent/50 bg-accent/[0.04] px-8 py-4 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-accent transition-all duration-300 hover:bg-accent/10"
+        disabled={status === "sending"}
+        className="mt-8 border border-accent/50 bg-accent/[0.04] px-8 py-4 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-accent transition-all duration-300 hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Send Message
+        {status === "sending" ? "Sending…" : "Send Message"}
       </button>
     </form>
   );
