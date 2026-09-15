@@ -389,6 +389,13 @@ Design system (tokens, typography, borders, animations, buttons) unchanged.
   updates (35,000 after E-commerce), nav + mobile menu work.
 
 ### Operational warnings (READ before touching this project)
+- **Phone/LAN access during `next dev`:** the dev server blocks dev-only
+  `/_next/*` assets for foreign origins, which caused a 500
+  (`Invariant: Expected clientReferenceManifest to be defined`) when the
+  phone opened the site. Fixed via `allowedDevOrigins` in
+  `next.config.ts` (`192.168.0.100`, `192.168.0.*`). If the phone moves to
+  another subnet, add its IP/subnet there. `next.config` changes require a
+  dev-server restart to take effect.
 - **Never run `next build` while the dev server is live.** Both write to the same
   `.next/` directory; the build corrupts the running dev server (500s,
   `Cannot find module './331.js'`). Validate with `next build` only when the
