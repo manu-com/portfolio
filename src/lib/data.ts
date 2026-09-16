@@ -78,6 +78,7 @@ export const projects: Project[] = [
     liveUrl: "https://inventory-system-manu-co.vercel.app",
     githubUrl: null,
     imageAlt: "Inventory system interface screenshot",
+    image: "/projects/inventory-system.png",
     overview:
       "A reusable, frontend-only inventory management template. Everything runs in the browser — data persists to localStorage through React Context, and rich demo data is seeded on first load so every page has content to explore.",
     problem:
