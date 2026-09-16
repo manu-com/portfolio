@@ -73,26 +73,30 @@ export const projects: Project[] = [
     name: "Inventory System",
     category: "Web Application",
     description:
-      "A web-based inventory management application built with React and Vite — dashboard, product and category management, filtering, and a component-driven architecture.",
-    technologies: ["React", "React Router", "Vite", "Tailwind CSS"],
-    liveUrl: "",
+      "A reusable, frontend-only inventory management template built with React and Vite — products, categories, suppliers, purchase orders, stock movements, and reports, all persisting to localStorage in the browser.",
+    technologies: ["React 19", "React Router 7", "Vite", "Tailwind CSS 4", "lucide-react"],
+    liveUrl: "https://inventory-system-manu-co.vercel.app",
     githubUrl: null,
-    imageAlt: "Inventory management system interface screenshot",
+    imageAlt: "Inventory system interface screenshot",
     overview:
-      "A web application for managing inventory — tracking products, organizing them into categories, and monitoring stock through a dashboard.",
+      "A reusable, frontend-only inventory management template. Everything runs in the browser — data persists to localStorage through React Context, and rich demo data is seeded on first load so every page has content to explore.",
     problem:
-      "Keeping track of products, categories, and stock levels in spreadsheets gets unwieldy as inventory grows. A dedicated interface makes the data manageable and easier to act on.",
+      "Tracking products, categories, and stock levels in spreadsheets gets unwieldy as inventory grows. A dedicated self-contained template covers the whole workflow without requiring a backend or database.",
     solution:
-      "A React application with distinct pages for the dashboard, products, and categories, backed by API calls and client-side filtering so the data stays responsive and easy to navigate.",
+      "A component-driven React app with a dashboard, products, categories, suppliers, purchase orders, stock movements, and reports — plus dark mode, a Ctrl+K command palette, CSV import/export, and JSON backup/restore, all running fully in the browser.",
     features: [
-      "Dashboard with an overview of key information",
-      "Product pages and category management",
-      "Filtering and search across the catalogue",
-      "Modal-based interactions with animated transitions",
-      "Path aliases and a component-driven layout for maintainability",
+      "Products with card/table views, search, category, supplier, and price filters",
+      "Sortable columns, stock adjustments, and bulk actions (restock, reduce, set count)",
+      "Categories and suppliers with full CRUD and delete protection",
+      "Purchase orders with auto-generated PO numbers and a Draft → Pending → Received/Cancelled lifecycle",
+      "Every stock change logged as signed movements, filterable and grouped by day",
+      "Dashboard metrics: stock value, low-stock count, potential margin, and demo-data loader",
+      "Reports with inventory valuation, category summaries, and supplier breakdowns",
+      "Settings for currency, dark mode, pagination, CSV import/export, and full JSON backup/restore",
+      "Global command palette (Ctrl+K) to search and act anywhere in the app",
     ],
     results:
-      "Actively under development. A live deployment and public demo are planned for a later stage.",
+      "Published as a live demo on Vercel — a self-contained template ready to be adapted for real inventory workflows.",
   },
 ];
 
