@@ -368,11 +368,36 @@ Design system (tokens, typography, borders, animations, buttons) unchanged.
   sent." / "Thanks! Your message has been sent.") with `[EMAIL ME]`
   `[WHATSAPP ME]` buttons; on failure they surface a fallback with direct
   email. Calculator math itself is unchanged (base 15,000 → 89,500 verified).
-- **Activation:** the FIRST AJAX submission triggers a FormSubmit activation
-  email to the inbox (click "Activate Form"). Until activated, deferred
-  responses are `success:"false"` with an "Activation" message — the app
-  detects this and shows a clear message instead of a generic error. No more
-  placeholder values; footer now lists email + phone + WhatsApp.
+- **Delivery:** FormSubmit is now **activated** — the hash endpoint returns
+  `{"success":"true"}` and mail is delivered to the inbox. (Activation was a
+  one-time email click; before activation the app showed a clear message
+  instead of a generic error.)
+- Favicon: `src/app/icon.png` = `~/Documents/terminals.png` (default
+  `favicon.ico` removed). Browsers cache favicons — hard refresh to see it.
+
+### Deployment & GitHub access (Sep 2026)
+- **Vercel is connected.** Logged in via CLI as `manu-com`. Project
+  `portfolio` → **https://portfolio-liart-gamma-8is427ccfa.vercel.app**
+  (Node 24). Deployments are triggered by pushing `main` to GitHub (no
+  `.vercel` link file locally — never run `vercel link` unless asked).
+- **Private-repo GitHub access:** the local git credential helper
+  `~/.config/portfolio/git-asktoken.sh` (repo-local `--local` config)
+  reads the GitHub PAT from **`~/.config/portfolio/.env`** (`gt_tk:"..."`)
+  on demand, so pushes to `github.com/manu-com/portfolio` just work. The
+  token is **never in the repo**. Note: token **expires ~30 days from
+  Sep 16 2026** — refresh in `~/.config/portfolio/.env` when pushes start
+  failing.
+- **Only `portfolio` is public** on GitHub (`manu-com` has no other public
+  repos). `business-template` and `inventory-system` are **private** → both
+  have `githubUrl: null` and their GitHub links are hidden (conditional
+  render in `project-entry.tsx` + `work/[slug]/page.tsx`). `githubUrl` is
+  now `string | null` — set a URL to reveal the link later.
+- **Private-repo data pulled with the token** when updating portfolio
+  content (README → description/features/tech). Inventory System now uses
+  real data: live URL `https://inventory-system-manu-co.vercel.app`,
+  tech React 19 / React Router 7 / Vite / Tailwind CSS 4 / lucide-react,
+  and screenshot `public/projects/inventory-system.png` downloaded from the
+  private repo (`screenshots/dashboard.png`, 1440×900).
 
 ### Drawdown: animations reduced to minimum (Sep 2026)
 - Removed all scroll/load choreography: `.reveal` + delay classes,
@@ -406,8 +431,17 @@ Design system (tokens, typography, borders, animations, buttons) unchanged.
   Use `setsid` so it survives the tool shell session.
 - Dev server used to be the user's terminal process (pid 44842); it was broken
   in-session by a `next build` and re-launched detached by this session.
+- **Dev server is currently STOPPED** (user closed it). Start on demand with
+  the `setsid` command above; recommend `rm -rf .next` after a stop/start.
 
 ### Commit log (multi-page refactor)
+- `9eaef25` — add Inventory System screenshot (from private repo dashboard)
+- `de5b0fe` — update Inventory System project data with real private-repo details
+- `dbdf037` — use terminals.png as site favicon
+- `c02deaf` — hide GitHub links for private repos
+- `bd59eb6` — allow LAN device access in dev via allowedDevOrigins
+- `e15ee34` — use FormSubmit form-ID hash instead of naked email endpoint
+- `4fb613d` — wire real contact details + frontend email submissions
 - `8e348dc` — animations reduced to minimum; static `Reveal`, server `Hero`
 - `bd142e9` — deduplicate services (extract `ServicesGrid`), /services heading once
 - `04e6dff` — multi-page refactor (routes, global nav/footer, template transitions)
