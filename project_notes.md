@@ -569,6 +569,33 @@ size change.
   honours `NEXT_PUBLIC_SITE_URL`; the default is the current Vercel domain.
   **No custom domain is configured yet** — add one and set the env var.
 
+### Sibling repos — scaffold placeholders (Sep 2026)
+- The original plan listed four placeholder projects ("E-Commerce Platform",
+  "Task Management App", "Weather Dashboard", "Portfolio Framework") that never
+  existed as work. Three have now been **scaffolded as empty Next.js starters**,
+  pushed to private repos. **They contain no features** — each README and
+  `project_notes.md` states this explicitly so they are not later mistaken for
+  client projects.
+- `manu-com/task-management-app` → `../task-management-app` (real-time
+  collaborative board; nothing implemented)
+- `manu-com/weather-dashboard` → `../weather-dashboard` (weather visualisation;
+  no API client, no charts, no key configured)
+- `manu-com/portfolio-framework` → `../portfolio-framework` (Markdown-driven
+  content generation; no pipeline)
+- **"E-Commerce Platform" was deliberately not scaffolded** — `../skincare-store`
+  (`manu-com/afia-max`, Next.js + Supabase + Zustand) already covers that ground
+  as real work, and a second empty shell would only dilute it.
+- All three are on **Next 16.3.6 / React 19.2.8 / Tailwind 4**, whereas this repo
+  is on **Next 15.5.25**. Fine while separate, but it will bite if shared
+  components ever move between them.
+- **These are NOT portfolio case studies.** `data.ts` still lists only the two
+  real projects. Do not add them to `/work` as though they were built — that is
+  the exact failure the stale "Content (Placeholder)" section already caused
+  once. `githubUrl` is hidden for private repos (see commit `c02deaf`), so a
+  listed case study would also ship a dead link.
+- Each has a `project_notes.md`; the portfolio has no shared template with them,
+  so conventions may drift.
+
 ### Operational warnings (READ before touching this project)
 - **Phone/LAN access during `next dev`:** the dev server blocks dev-only
   `/_next/*` assets for foreign origins, which caused a 500
@@ -591,6 +618,9 @@ size change.
   the `setsid` command above; recommend `rm -rf .next` after a stop/start.
 
 ### Commit log (multi-page refactor)
+- `Record sibling scaffold repos (Sep 2026)` — document the three private
+  scaffold repos, why "E-Commerce Platform" was skipped, and why they must not
+  be added as case studies
 - `Add a real test suite, skip link, and share metadata` — unit tests
   (`node:test`, no new deps) + 37-check Playwright browser suite; skip link for
   the previously dangling `#main`; `metadataBase`/OG image/twitter/sitemap/
