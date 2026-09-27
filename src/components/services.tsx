@@ -23,7 +23,7 @@ export function ServicesGrid({ detailed = false }: { detailed?: boolean }) {
               <>
                 <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div>
-                    <p className="text-[0.65rem] uppercase tracking-[0.25em] text-secondary/50">
+                    <p className="text-[0.7rem] uppercase tracking-[0.2em] text-secondary/60">
                       What&apos;s included
                     </p>
                     <ul className="mt-3 flex flex-col gap-2">
@@ -39,7 +39,7 @@ export function ServicesGrid({ detailed = false }: { detailed?: boolean }) {
                     </ul>
                   </div>
                   <div>
-                    <p className="text-[0.65rem] uppercase tracking-[0.25em] text-secondary/50">
+                    <p className="text-[0.7rem] uppercase tracking-[0.2em] text-secondary/60">
                       Typical use cases
                     </p>
                     <ul className="mt-3 flex flex-col gap-2">
@@ -57,7 +57,7 @@ export function ServicesGrid({ detailed = false }: { detailed?: boolean }) {
                 </div>
                 <Link
                   href="/quote"
-                  className="link-underline mt-8 inline-block text-[0.8rem] uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:text-accent/80"
+                  className="link-underline tap-target mt-8 inline-block text-[0.8rem] uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:text-accent/80"
                 >
                   Get a quote &rarr;
                 </Link>
@@ -93,7 +93,7 @@ export function Services({ compact = false }: { compact?: boolean }) {
             <div className="mt-12 border-t border-line pt-10">
               <Link
                 href="/services"
-                className="group inline-flex items-center gap-2 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-secondary transition-colors duration-300 hover:text-accent"
+                className="group tap-target inline-flex items-center gap-2 py-2 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-secondary transition-colors duration-300 hover:text-accent"
               >
                 All services
                 <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">

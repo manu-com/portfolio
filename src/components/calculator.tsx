@@ -114,7 +114,7 @@ function Pill({
       }`}
     >
       {label}
-      <span className="ml-2 text-[0.65rem] tracking-wider text-secondary/60">
+      <span className="ml-2 text-[0.7rem] tracking-wider text-secondary/60">
         {price === 0 ? "" : `+${formatKSh(price)}`}
       </span>
     </button>
@@ -161,7 +161,7 @@ function CheckRow({
         <span className={`text-sm ${checked ? "text-primary" : "text-secondary"}`}>
           {label}
         </span>
-        <span className="text-[0.65rem] tracking-wider text-secondary/50">+ {formatKSh(price)}</span>
+        <span className="text-[0.7rem] tracking-wider text-secondary/60">+ {formatKSh(price)}</span>
       </div>
     </button>
   );
@@ -313,7 +313,7 @@ export function Calculator() {
                     </span>
                   </div>
 
-                  <p className="mt-2 text-[0.65rem] leading-relaxed text-secondary/60">
+                  <p className="mt-2 text-[0.7rem] leading-relaxed text-secondary/60">
                     Estimated development cost. Final pricing may vary depending
                     on project requirements.
                   </p>
@@ -346,9 +346,9 @@ export function Calculator() {
 
       {/* Mobile sticky bar */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-background/90 backdrop-blur-md lg:hidden">
-        <div className="flex items-center justify-between gap-4 px-5 py-4">
+        <div className="flex items-center justify-between gap-4 px-5 pt-4 pb-[calc(1rem+var(--safe-bottom))]">
           <div>
-            <p className="text-[0.6rem] uppercase tracking-[0.25em] text-secondary">
+            <p className="text-[0.7rem] uppercase tracking-[0.2em] text-secondary">
               Estimated total
             </p>
             <p className="text-lg font-bold tracking-tight text-primary">{formatKSh(total)}</p>
@@ -359,7 +359,7 @@ export function Calculator() {
               setQuoteOpen(true);
               window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
             }}
-            className="whitespace-nowrap border border-accent/50 px-5 py-3 text-[0.7rem] font-medium uppercase tracking-[0.2em] text-accent transition-colors hover:bg-accent/10"
+            className="tap-target whitespace-nowrap border border-accent/50 px-5 py-3.5 text-[0.7rem] font-medium uppercase tracking-[0.2em] text-accent transition-colors hover:bg-accent/10"
           >
             Request Quote
           </button>
@@ -536,7 +536,7 @@ function QuoteForm({
 
         {/* Pre-filled selections */}
         <div className="rounded border border-border/50 bg-background/40 p-4">
-          <p className="text-[0.65rem] uppercase tracking-[0.25em] text-secondary/60">
+          <p className="text-[0.7rem] uppercase tracking-[0.2em] text-secondary/60">
             Your selections
           </p>
           <ul className="mt-2 flex flex-col gap-1">

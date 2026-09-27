@@ -9,6 +9,18 @@
   --border: rgba(255, 255, 255, 0.06);
   --border-hover: rgba(255, 255, 255, 0.14);
   --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Device safe areas (notch / home indicator) */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  /* Header height grows by the notch inset so overlays can align to it */
+  --header-h: calc(4rem + env(safe-area-inset-top, 0px));
+
+  /* Minimum comfortable touch target */
+  --tap: 44px;
 }
 
 @theme inline {
@@ -29,6 +41,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Stop iOS inflating text when the device is rotated in landscape */
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -38,6 +52,8 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  /* Suppress the default blue flash; hover transitions carry the feedback */
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::selection {
@@ -60,6 +76,50 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #333333;
+}
+
+/* ---------------- Mobile ergonomics ---------------- */
+
+/* iOS zooms the viewport when a focused field is under 16px. 16px is the
+   threshold, so this only ever raises the size, never lowers it. */
+input,
+textarea,
+select {
+  font-size: max(1rem, 16px);
+}
+
+@media (min-width: 768px) {
+  input,
+  textarea,
+  select {
+    font-size: 0.875rem;
+  }
+}
+
+/* Small inline links are visually tight but must still be easy to hit.
+   `.tap-target` grows the clickable box to 44px without moving the label,
+   by overlaying a centred pseudo-element. Uses ::before because
+   `.link-underline` already claims ::after. Only on real pointers.
+   The overlay must keep pointer-events: it is the child box that receives
+   the tap, and the browser reports the originating link as the target. */
+.tap-target {
+  position: relative;
+}
+
+.tap-target::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: max(44px, var(--tap));
+  transform: translateY(-50%);
+}
+
+@media (pointer: fine) {
+  .tap-target::before {
+    content: none;
+  }
 }
 
 /* ---------------- Link underline ---------------- */

@@ -30,7 +30,7 @@ export function AboutShort() {
           <Reveal delay={3}>
             <Link
               href="/about"
-              className="group mt-8 inline-flex items-center gap-2 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-secondary transition-colors duration-300 hover:text-accent"
+              className="group tap-target mt-8 inline-flex items-center gap-2 py-2 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-secondary transition-colors duration-300 hover:text-accent"
             >
               More about me
               <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">

@@ -413,6 +413,78 @@ Design system (tokens, typography, borders, animations, buttons) unchanged.
 - Verified: all 13 QA checks pass, no console errors, calculator still
   updates (35,000 after E-commerce), nav + mobile menu work.
 
+### Mobile UI pass (Sep 2026)
+Audited with Playwright/Firefox at **320 / 390 / 430px across all 7 routes**, then
+fixed what the measurements actually showed. No redesign — same design language.
+
+**Root-cause bug (reported as "menu appears transparent, at the top of the screen"):**
+`backdrop-filter` on `<header>` makes it the **containing block for
+`position: fixed` descendants**. The mobile overlay was nested inside that header,
+so its `fixed inset-0 top-16` resolved against the header's own 64px box instead of
+the viewport → `top:64px` + `bottom:0` in a 64px box = **height 0**. Only happened
+once scrolled, because `backdrop-blur-md` is only applied in the `scrolled` state —
+which is why it looked like a scroll bug. **Fix: portaled the overlay to
+`document.body`** via `createPortal` (guarded by a `mounted` flag). Measured
+0px/64px before → 780px/268.5 centered after. Commit `6def307`.
+
+**iOS zoom-on-focus:** all inputs/textareas were `text-sm` (14px). iOS Safari zooms
+the viewport on any focused field under 16px, so the contact and quote forms
+visibly jumped on iPhone. Fixed globally in `globals.css`:
+`input, textarea, select { font-size: max(1rem, 16px) }`, with a
+`@media (min-width: 768px)` reset to `0.875rem` so desktop is untouched.
+
+**Tap targets:** ~20 interactive elements were 17–24px tall. Added a `.tap-target`
+utility — a centred `::before` overlay that grows the hit box to 44px **without
+moving the label**, so the tight editorial spacing is preserved. It must use
+`::before`, **not `::after`**: `.link-underline` already claims `::after` for the
+underline and silently wins the cascade (this actually happened on the first
+attempt — the overlay computed to `height: 1px`). Disabled under
+`@media (pointer: fine)`. Footer links additionally got real `py-3 md:py-1.5`, and
+the /work filter pills `py-3`.
+
+**`.tap-target` has two failure modes that computed style will not reveal.** The
+overlay only works if it is actually the hit-test target, so verify with
+`document.elementFromPoint()`, not by reading the pseudo-element's computed
+height — the first version of the audit did the latter and reported a clean pass
+on a completely non-functional overlay.
+1. The overlay **must not** carry `pointer-events: none`. That makes hit testing
+   skip the pseudo-element and fall through to the ancestor (`<li>`/`<div>`), so
+   the grown area is never tappable. The pseudo-element is a child box of the
+   link, so the browser reports the originating link as the event target.
+2. The link must not be `overflow: hidden` — that **clips its own overlay**. The
+   mobile-menu email link had `truncate` (= `overflow: hidden`) and so kept a 20px
+   hit box. Fix: put `truncate` on an inner `<span>` and leave the `<a>` clean.
+
+**Portal side effect — keyboard tab order regressed.** Rendering the overlay at
+the end of `<body>` (which is what fixed the containing-block bug) moved its
+links *after* every link on the page, so Tab from the hamburger walked the entire
+page before reaching the menu. Fixed by focusing the first menu link on open,
+closing on `Escape`, and returning focus to the toggle. Also added
+`aria-controls="mobile-menu"` and an `id` on the panel.
+
+**Sub-11px type:** `0.6rem`/`0.65rem` (9.6/10.4px) labels in
+`technologies.tsx`, `services.tsx`, `calculator.tsx` raised to a `0.7rem` floor.
+
+**Safe areas:** `--safe-top/bottom/left/right` + `--header-h`
+(`calc(4rem + env(safe-area-inset-top))`) tokens added. The fixed header now pads
+by the notch and the overlay aligns to `--header-h` instead of a hardcoded `top-16`.
+Footer bottom bar, hero, and the calculator's mobile sticky bar clear the home
+indicator. `/contact` moved from `pt-24` → `pt-32` (96px would have collided with a
+59px notch + 64px header in standalone mode).
+
+**Also:** overlay gets `aria-hidden` + `tabIndex={-1}` on its links while closed
+(they were keyboard-reachable through an invisible overlay), `overscroll-contain`,
+header goes solid while the menu is open, menu auto-closes via `matchMedia` when
+the viewport crosses `md` (tablet rotation left it stuck), tap-highlight disabled,
+and `-webkit-text-size-adjust: 100%`.
+
+**Verified:** 7 routes × 3 widths clean for overflow / tap targets / tiny text /
+input size; contrast re-audited with alpha compositing and was **already passing**
+(0 failures) so no colour was touched; menu open→navigate→close, scroll lock,
+desktop nav, and calculator math (15,000 base → 35,000 E-commerce, matching the
+documented reference) all still pass; lint + tsc + `next build` clean, no bundle
+size change.
+
 ### Operational warnings (READ before touching this project)
 - **Phone/LAN access during `next dev`:** the dev server blocks dev-only
   `/_next/*` assets for foreign origins, which caused a 500
@@ -435,6 +507,8 @@ Design system (tokens, typography, borders, animations, buttons) unchanged.
   the `setsid` command above; recommend `rm -rf .next` after a stop/start.
 
 ### Commit log (multi-page refactor)
+- `6def307` — fix mobile menu overlay collapsing after scroll (portal out of the
+  blurred header)
 - `9eaef25` — add Inventory System screenshot (from private repo dashboard)
 - `de5b0fe` — update Inventory System project data with real private-repo details
 - `dbdf037` — use terminals.png as site favicon

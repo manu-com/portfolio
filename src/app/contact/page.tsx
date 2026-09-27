@@ -38,7 +38,7 @@ export default function ContactPage() {
   return (
     <>
       <header className="border-t border-line">
-        <div className="mx-auto max-w-6xl px-6 pt-24 pb-10 md:px-10 md:pt-32">
+        <div className="mx-auto max-w-6xl px-6 pt-32 pb-10 md:px-10 md:pt-40">
           <Reveal>
             <SectionLabel>Contact</SectionLabel>
           </Reveal>
@@ -81,14 +81,14 @@ export default function ContactPage() {
           </div>
 
           <Reveal delay={3}>
-            <div className="flex flex-wrap items-center gap-8 border-t border-line pt-8">
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-1 border-t border-line pt-6">
               {socials.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   target={social.href.startsWith("http") ? "_blank" : undefined}
                   rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="link-underline text-[0.8rem] uppercase tracking-[0.2em] text-secondary transition-colors duration-300 hover:text-primary"
+                  className="link-underline tap-target py-2 text-[0.8rem] uppercase tracking-[0.2em] text-secondary transition-colors duration-300 hover:text-primary"
                 >
                   {social.label}
                 </a>

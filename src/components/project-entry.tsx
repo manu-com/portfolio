@@ -81,7 +81,7 @@ export function ProjectEntry({ project, reversed = false }: ProjectEntryProps) {
         <Reveal delay={1}>
           <Link
             href={`/work/${project.slug}`}
-            className="mt-4 inline-block text-[clamp(1.75rem,3.5vw,3rem)] font-bold tracking-tight text-primary transition-colors duration-300 hover:text-accent"
+            className="tap-target mt-4 inline-block text-[clamp(1.75rem,3.5vw,3rem)] font-bold tracking-tight text-primary transition-colors duration-300 hover:text-accent"
           >
             {project.name}
           </Link>
@@ -107,10 +107,10 @@ export function ProjectEntry({ project, reversed = false }: ProjectEntryProps) {
         </Reveal>
 
         <Reveal delay={3}>
-          <div className="mt-8 flex items-center gap-6">
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-1">
             <Link
               href={`/work/${project.slug}`}
-              className="link-underline inline-flex items-center gap-2 text-[0.8rem] uppercase tracking-[0.2em] text-primary transition-colors duration-300 hover:text-accent"
+              className="link-underline tap-target inline-flex items-center gap-2 text-[0.8rem] uppercase tracking-[0.2em] text-primary transition-colors duration-300 hover:text-accent"
             >
               Case Study
             </Link>
@@ -119,7 +119,7 @@ export function ProjectEntry({ project, reversed = false }: ProjectEntryProps) {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link-underline group inline-flex items-center gap-2 text-[0.8rem] uppercase tracking-[0.2em] text-primary transition-colors duration-300 hover:text-accent"
+                className="link-underline tap-target group inline-flex items-center gap-2 text-[0.8rem] uppercase tracking-[0.2em] text-primary transition-colors duration-300 hover:text-accent"
               >
                 Live
                 <span aria-hidden="true" className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
@@ -132,7 +132,7 @@ export function ProjectEntry({ project, reversed = false }: ProjectEntryProps) {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link-underline text-[0.8rem] uppercase tracking-[0.2em] text-secondary transition-colors duration-300 hover:text-primary"
+                className="link-underline tap-target text-[0.8rem] uppercase tracking-[0.2em] text-secondary transition-colors duration-300 hover:text-primary"
               >
                 GitHub
               </a>

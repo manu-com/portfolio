@@ -23,14 +23,14 @@ export function Technologies() {
             delay={(index % 3) as 0 | 1 | 2}
             className="bg-background"
           >
-            <div className="group flex h-28 flex-col items-center justify-center gap-1 border-b border-line transition-colors duration-500 hover:bg-surface sm:h-32 md:h-36">
-              <span className="text-[0.65rem] uppercase tracking-[0.2em] text-secondary/60">
+            <div className="group flex h-28 flex-col items-center justify-center gap-1.5 border-b border-line px-2 text-center transition-colors duration-500 hover:bg-surface sm:h-32 md:h-36">
+              <span className="text-[0.7rem] uppercase tracking-[0.2em] text-secondary/60">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <span className="text-lg font-semibold tracking-tight text-primary transition-colors duration-300 group-hover:text-accent md:text-xl">
                 {tech.name}
               </span>
-              <span className="text-[0.6rem] uppercase tracking-[0.2em] text-secondary/40 md:text-[0.65rem]">
+              <span className="text-[0.7rem] uppercase leading-snug tracking-[0.15em] text-secondary/50">
                 {tech.note}
               </span>
             </div>

@@ -5,7 +5,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="flex min-h-svh flex-col justify-between px-6 pb-12 pt-32 md:px-10 md:pt-40"
+      className="flex min-h-svh flex-col justify-between px-6 pt-32 pb-[calc(3rem+var(--safe-bottom))] md:px-10 md:pt-40"
     >
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center">
         <p className="mb-8 flex items-center gap-3 text-[0.8rem] uppercase tracking-[0.3em] text-secondary">
@@ -37,7 +37,7 @@ export function Hero() {
           </Link>
           <Link
             href="/contact"
-            className="group inline-flex items-center justify-center gap-2 border-b border-border pb-1 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-secondary transition-colors duration-300 hover:border-accent hover:text-accent"
+            className="group tap-target inline-flex items-center justify-center gap-2 border-b border-border pb-1 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-secondary transition-colors duration-300 hover:border-accent hover:text-accent"
           >
             Contact
             <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">

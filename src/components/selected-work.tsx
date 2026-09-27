@@ -58,7 +58,7 @@ export function SelectedWork({
           <div className="mt-16 border-t border-line pt-10">
             <Link
               href="/work"
-              className="group inline-flex items-center gap-2 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-secondary transition-colors duration-300 hover:text-accent"
+              className="group tap-target inline-flex items-center gap-2 py-2 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-secondary transition-colors duration-300 hover:text-accent"
             >
               View all work
               <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">

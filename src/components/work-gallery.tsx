@@ -26,7 +26,7 @@ export function WorkGallery({ initial }: { initial: Project[] }) {
         <p className="text-xs uppercase tracking-[0.2em] text-secondary/60">
           Filter by category
         </p>
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-3" role="tablist" aria-label="Project categories">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-1" role="tablist" aria-label="Project categories">
           {categories.map((category, index) => (
             <button
               key={category}
@@ -34,13 +34,13 @@ export function WorkGallery({ initial }: { initial: Project[] }) {
               role="tab"
               aria-selected={active === category}
               onClick={() => setActive(category)}
-              className={`text-[0.8rem] uppercase tracking-[0.2em] transition-colors duration-300 ${
+              className={`tap-target py-3 text-[0.8rem] uppercase tracking-[0.2em] transition-colors duration-300 ${
                 active === category
                   ? "text-accent"
                   : "text-secondary hover:text-primary"
               }`}
             >
-              <span className="mr-2 text-[0.65rem] text-secondary/50">
+              <span className="mr-2 text-[0.7rem] text-secondary/50">
                 {String(index).padStart(2, "0")}
               </span>
               {category}

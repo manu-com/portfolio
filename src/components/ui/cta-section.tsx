@@ -29,7 +29,7 @@ export function CtaSection() {
             </Link>
             <Link
               href="/contact"
-              className="group inline-flex items-center justify-center gap-2 border-b border-border pb-1 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-secondary transition-colors duration-300 hover:border-accent hover:text-accent"
+              className="group tap-target inline-flex items-center justify-center gap-2 border-b border-border pb-1 text-[0.8rem] font-medium uppercase tracking-[0.25em] text-secondary transition-colors duration-300 hover:border-accent hover:text-accent"
             >
               Get in Touch
               <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
