@@ -377,9 +377,30 @@ Design system (tokens, typography, borders, animations, buttons) unchanged.
 
 ### Deployment & GitHub access (Sep 2026)
 - **Vercel is connected.** Logged in via CLI as `manu-com`. Project
-  `portfolio` → **https://portfolio-liart-gamma-8is427ccfa.vercel.app**
-  (Node 24). Deployments are triggered by pushing `main` to GitHub (no
-  `.vercel` link file locally — never run `vercel link` unless asked).
+  `portfolio` (id `prj_zjnXfh6OY0PdGt2WKainRUcrxYIX`, team `manu-co`, Node 24,
+  region `iad1`) → **https://portfolio-manu-co.vercel.app**
+  (aliases: `manu-dev-portfolio.vercel.app`,
+  `portfolio-git-main-manu-co.vercel.app`). Deployments are triggered by
+  pushing `main` to GitHub (no `.vercel` link file locally — never run
+  `vercel link` unless asked). The previously recorded URL
+  `portfolio-liart-gamma-8is427ccfa.vercel.app` is **dead (404)** — the project
+  domain was reassigned at some point, so don't trust it.
+- **Vercel Authentication was silently locking the site.** The project had
+  `ssoProtection: {"deploymentType": "all_except_custom_domains"}` while having
+  **zero custom domains**, so the main domain and every deployment URL 302'd to
+  `vercel.com/sso-api` — visitors got a Vercel login screen, not the portfolio.
+  Disabled on Sep 27 2026 via
+  `vercel api /v9/projects/<id> -X PATCH --input -` with `{"ssoProtection": null}`.
+  Re-enable the same way if the site ever needs to be private. **Check with
+  `curl` *without* `-L`** — following the redirect returns the login page's
+  `200`, which makes a locked site look healthy.
+- **Verifying a live deployment:** test the *production* build, not just local
+  dev. Two traps that produce fake failures: navigating between routes with
+  `wait_until="domcontentloaded"` aborts in-flight requests
+  (`NS_BINDING_ABORTED` on images/chunks) and reports phantom font-download
+  errors — load one route per fresh context and wait for `networkidle`.
+  Confirmed clean on all 7 routes, and the mobile-menu portal fix, keyboard
+  focus handling, safe-area tokens and 16px mobile inputs are all live.
 - **Private-repo GitHub access:** the local git credential helper
   `~/.config/portfolio/git-asktoken.sh` (repo-local `--local` config)
   reads the GitHub PAT from **`~/.config/portfolio/.env`** (`gt_tk:"..."`)
@@ -507,6 +528,8 @@ size change.
   the `setsid` command above; recommend `rm -rf .next` after a stop/start.
 
 ### Commit log (multi-page refactor)
+- `6e28e6d` — mobile ergonomics pass (16px mobile inputs to stop iOS zoom,
+  44px tap targets, safe-area insets, menu keyboard focus + Escape)
 - `6def307` — fix mobile menu overlay collapsing after scroll (portal out of the
   blurred header)
 - `9eaef25` — add Inventory System screenshot (from private repo dashboard)
