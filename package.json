@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import ./tests/alias-hooks.mjs --test tests/unit/",
+    "test:browser": "python tests/browser/smoke.py",
+    "test:browser:prod": "python tests/browser/smoke.py --prod",
+    "test:all": "npm run test && npm run test:browser"
   },
   "dependencies": {
     "next": "^15.5.25",

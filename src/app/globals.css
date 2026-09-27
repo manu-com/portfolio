@@ -112,7 +112,10 @@ select {
   top: 50%;
   left: 0;
   right: 0;
-  height: max(44px, var(--tap));
+  /* 45px, not 44px: the overlay is centred on a half-pixel for odd-height
+     labels, so a literal 44px measures as a 43px tappable band. The extra
+     pixel keeps the real hit area at or above the 44px target. */
+  height: max(45px, var(--tap));
   transform: translateY(-50%);
 }
 
@@ -120,6 +123,33 @@ select {
   .tap-target::before {
     content: none;
   }
+}
+
+/* ---------------- Skip link ---------------- */
+
+/* Off-screen until focused, then pinned below the safe-area inset. Targets
+   the `#main` landmark so keyboard users can bypass the nav on every page. */
+.skip-link {
+  position: fixed;
+  top: calc(0.5rem + var(--safe-top));
+  left: 0.5rem;
+  z-index: 100;
+  transform: translateY(-200%);
+  padding: 0.75rem 1.25rem;
+  background: var(--accent);
+  color: var(--background);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: transform 0.2s var(--ease-luxury);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
 }
 
 /* ---------------- Link underline ---------------- */

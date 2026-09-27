@@ -3,6 +3,7 @@ import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { profile } from "@/lib/data";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -23,18 +24,32 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
+const description =
+  "I build websites, web applications, and software that are fast, functional, and thoughtfully crafted.";
+
+/* Absolute OG/Twitter image URLs need an origin; without metadataBase Next
+   warns and social previews can render with no image at all. */
+const siteUrl = SITE_URL;
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: `${profile.name} — Web Developer & Software Developer`,
     template: `%s — ${profile.name}`,
   },
-  description:
-    "I build websites, web applications, and software that are fast, functional, and thoughtfully crafted.",
+  description,
+  alternates: { canonical: "/" },
   openGraph: {
-    title: `${profile.name} — Web Developer & Software Developer`,
-    description:
-      "I build websites, web applications, and software that are fast, functional, and thoughtfully crafted.",
     type: "website",
+    url: siteUrl,
+    siteName: profile.name,
+    title: `${profile.name} — Web Developer & Software Developer`,
+    description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${profile.name} — Web Developer & Software Developer`,
+    description,
   },
 };
 
@@ -49,8 +64,11 @@ export default function RootLayout({
       className={`${inter.variable} ${fraunces.variable} ${mono.variable} antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-primary">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <Navigation />
-        <main id="main" className="flex-1">
+        <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
           {children}
         </main>
         <Footer />

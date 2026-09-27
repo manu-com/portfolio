@@ -236,21 +236,35 @@ SOMETHING USEFUL.
 
 ---
 
-## Content (Placeholder)
+## Content (actual, verified against `src/lib/data.ts`)
 
-### Projects (4 placeholders)
-1. **E-Commerce Platform** — Modern online store with React, Node.js, Stripe
-2. **Task Management App** — Real-time collaborative tool, WebSocket, TypeScript
-3. **Weather Dashboard** — Data visualization, API integration, responsive design
-4. **Portfolio Framework** — Static site generator, markdown support, fast builds
+> This section previously listed **4 placeholder projects** (E-Commerce
+> Platform, Task Management App, Weather Dashboard, Portfolio Framework) and
+> placeholder contacts (`hello@manu.dev`, `github.com/manu`, a LinkedIn
+> profile). None of that shipped — it was initial scaffolding from the plan.
+> Corrected Sep 27 2026 against the real data.
 
-### About Text
-"I'm Manu — a developer focused on building web applications and software that work well and look good doing it. I care about clean code, thoughtful interfaces, and technology that actually serves a purpose."
+### Projects (2, both real)
+1. **Business Template** — `/work/business-template`, live at
+   `https://business-template-kohl.vercel.app`, `githubUrl: null` (private repo)
+2. **Inventory System** — `/work/inventory-system`, live at
+   `https://inventory-system-manu-co.vercel.app`, `githubUrl: null`
+   (private repo, React 19 / React Router 7 / Vite / Tailwind 4)
 
-### Contact Links (placeholders)
-- Email: hello@manu.dev
-- GitHub: github.com/manu
-- LinkedIn: linkedin.com/in/manu
+### About text
+`profile.intro`: "I build websites, web applications, and software that are
+fast, functional, and thoughtfully crafted."
+
+### Contact links (real, no LinkedIn)
+- Email `e.ndereba1@gmail.com` · phone `+254 112 888 460` (`tel:+254112888460`)
+- WhatsApp `https://wa.me/254112888460` · GitHub `https://github.com/manu-com`
+- `socials` = GitHub, WhatsApp, Email. **LinkedIn was deliberately removed**
+  everywhere and must not be reintroduced.
+
+### Still placeholder-ish
+- `business-template` is a *template* product, not a bespoke client build. It is
+  listed as a case study; consider whether that framing is honest for the
+  services it advertises.
 
 ---
 
@@ -475,6 +489,9 @@ on a completely non-functional overlay.
 2. The link must not be `overflow: hidden` — that **clips its own overlay**. The
    mobile-menu email link had `truncate` (= `overflow: hidden`) and so kept a 20px
    hit box. Fix: put `truncate` on an inner `<span>` and leave the `<a>` clean.
+3. The overlay is **45px, not 44px**. Centred on an odd-height label the band
+   lands on a half-pixel, so a literal 44px measures as a 43px tappable band and
+   fails a 44px assertion. The extra pixel absorbs the rounding.
 
 **Portal side effect — keyboard tab order regressed.** Rendering the overlay at
 the end of `<body>` (which is what fixed the containing-block bug) moved its
@@ -506,6 +523,52 @@ desktop nav, and calculator math (15,000 base → 35,000 E-commerce, matching th
 documented reference) all still pass; lint + tsc + `next build` clean, no bundle
 size change.
 
+### Test suite (added Sep 2026)
+- **There is now a real test suite**, because the reason the tap-target bug
+  survived is that *all* QA used to be ad-hoc scripts in `/tmp` that vanished.
+  - `npm test` — 29 unit tests, `node:test` + `node:assert`, **no new
+    dependencies**. Node 26 strips the TypeScript types natively;
+    `tests/alias-hooks.mjs` resolves the `@/*` alias (and appends the `.ts`
+    extension, which Node's ESM resolver will not infer) via `registerHooks`.
+    Requires `allowImportingTsExtensions` in `tsconfig.json`.
+  - `npm run test:browser` — 37 checks in `tests/browser/smoke.py` (Playwright,
+    **Firefox only**). Starts and stops *its own* dev server on port 3111 in its
+    own process group, so it never touches a dev server you already have open.
+  - `npm run test:browser:prod` — same suite against `npm start` (needs a build
+    first). Prefer this: it is what users actually get.
+  - `npm run typecheck` was added too; the scanner used to report
+    "typecheck: no script defined".
+- Covers: pricing math (totals always equal the sum of line items, unknown ids
+  ignored, max derived from config), data integrity (no placeholder content,
+  no `hello@manu.dev`, **LinkedIn must not reappear**, private repos keep
+  `githubUrl: null`), contact helpers, every route loading clean, tap targets,
+  menu geometry/keyboard, mobile 16px vs desktop 14px inputs, skip link, and
+  the OG/sitemap/robots/manifest routes.
+- **Verified the suite can actually fail:** re-adding `pointer-events: none` to
+  `.tap-target::before` made the measured bands collapse to the raw element box
+  (20px link → 20px band) and failed 3 checks. A test that cannot fail is
+  worse than none.
+- Next's dev-mode HMR socket (`ws://.../_next/webpack-hmr`) logs a console
+  error and is explicitly allowlisted as `DEV_NOISE`. It is framework tooling,
+  not app code, and is absent in production builds. Do not widen this list
+  without checking the error is not yours.
+
+### Accessibility, SEO & metadata (Sep 2026)
+- **Skip link added.** `<main id="main">` had existed with nothing pointing at
+  it, so keyboard users tabbed through the nav on all 7 pages — while
+  `data.ts` advertised "skip-to-content link" as a shipped feature of a case
+  study, making that claim false. The link is `.skip-link` in `globals.css`:
+  off-screen until focused, then pinned below the notch. `<main>` also got
+  `tabIndex={-1}` so focus can land there.
+- **Share preview added.** `metadataBase` + `openGraph`/`twitter` were missing
+  entirely, so shared links rendered with no preview image. `opengraph-image.tsx`
+  generates a 1200×630 PNG at build time in the site palette. **It has not been
+  visually reviewed — a human should eyeball it.**
+- `sitemap.ts` (built from `projects` so new case studies can't be missed),
+  `robots.ts`, `manifest.ts` added. `SITE_URL` lives in `src/lib/site.ts` and
+  honours `NEXT_PUBLIC_SITE_URL`; the default is the current Vercel domain.
+  **No custom domain is configured yet** — add one and set the env var.
+
 ### Operational warnings (READ before touching this project)
 - **Phone/LAN access during `next dev`:** the dev server blocks dev-only
   `/_next/*` assets for foreign origins, which caused a 500
@@ -528,6 +591,10 @@ size change.
   the `setsid` command above; recommend `rm -rf .next` after a stop/start.
 
 ### Commit log (multi-page refactor)
+- `Add a real test suite, skip link, and share metadata` — unit tests
+  (`node:test`, no new deps) + 37-check Playwright browser suite; skip link for
+  the previously dangling `#main`; `metadataBase`/OG image/twitter/sitemap/
+  robots/manifest; `.tap-target` overlay 44px → 45px for sub-pixel rounding
 - `6e28e6d` — mobile ergonomics pass (16px mobile inputs to stop iOS zoom,
   44px tap targets, safe-area insets, menu keyboard focus + Escape)
 - `6def307` — fix mobile menu overlay collapsing after scroll (portal out of the
